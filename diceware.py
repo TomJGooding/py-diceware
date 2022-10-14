@@ -9,7 +9,7 @@ def read_int(prompt: str, min_value: int = 1) -> int:
         try:
             value = int(user_input)
             if value < min_value:
-                print(f"The minimum passphrase length is {min_value}.")
+                print(f"The minimum value is {min_value}.")
             else:
                 return value
         except ValueError:
