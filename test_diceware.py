@@ -1,6 +1,12 @@
 from pytest import MonkeyPatch
 
-from diceware import is_valid_int, read_delimiter, read_number_of_words
+from diceware import (
+    is_valid_int,
+    is_valid_y_or_n,
+    read_capitalisation,
+    read_delimiter,
+    read_number_of_words,
+)
 
 
 def test_is_valid_int_when_input_is_valid():
@@ -44,3 +50,38 @@ def test_read_delimiter_with_input(monkeypatch: MonkeyPatch):
     monkeypatch.setattr("builtins.input", lambda _: input)
     result = read_delimiter("Delimiter: ")
     assert result == "_"
+
+
+def test_is_valid_y_or_n_with_valid_input():
+    input = "Yes"
+    result = is_valid_y_or_n(input)
+    assert result is True
+
+
+def test_is_valid_y_or_n_with_invalid_input(capfd):
+    input = "This string is not [y]es or [n]o!"
+    result = is_valid_y_or_n(input)
+    out, _ = capfd.readouterr()
+    assert result is False
+    assert "Please answer yes or no." in out
+
+
+def test_read_capitalisation_with_y_input(monkeypatch: MonkeyPatch):
+    input = "yEs"
+    monkeypatch.setattr("builtins.input", lambda _: input)
+    result = read_capitalisation("Capitalisation? [Y/n] ")
+    assert result is True
+
+
+def test_read_capitalisation_with_n_input(monkeypatch: MonkeyPatch):
+    input = "nO"
+    monkeypatch.setattr("builtins.input", lambda _: input)
+    result = read_capitalisation("Capitalisation? [Y/n] ")
+    assert result is False
+
+
+def test_read_capitalisation_empty_input_defaults(monkeypatch: MonkeyPatch):
+    input = ""
+    monkeypatch.setattr("builtins.input", lambda _: input)
+    result = read_capitalisation("Capitalisation? [Y/n] ")
+    assert result is True
