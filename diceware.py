@@ -1,3 +1,15 @@
+TITLE_BANNER = r"""
+    _______
+  /\       \                            _ _                                 
+ /()\   ()  \     _ __  _   _        __| (_) ___ _____      ____ _ _ __ ___ 
+/    \_______\   | '_ \| | | |_____ / _` | |/ __/ _ \ \ /\ / / _` | '__/ _ \
+\    /()     /   | |_) | |_| |_____| (_| | | (_|  __/\ V  V / (_| | | |  __/
+ \()/   ()  /    | .__/ \__, |      \__,_|_|\___\___| \_/\_/ \__,_|_|  \___|
+  \/_____()/     |_|    |___/                                               
+
+"""
+
+
 PASSPHRASE_DEFAULTS: dict = {
     "number_of_words": 6,
     "min_words": 1,
@@ -66,6 +78,7 @@ def read_capitalisation(prompt: str):
 
 
 def main() -> None:
+    print(TITLE_BANNER)
     number_of_words = read_number_of_words(
         f"Number of words (default={PASSPHRASE_DEFAULTS['number_of_words']}): "
     )
