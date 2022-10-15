@@ -3,21 +3,29 @@ class Passphrase:
         self.number_of_words: int = number_of_words
 
 
-def read_int(prompt: str, min_value: int = 1) -> int:
+def is_valid_int(user_input: str, min_value: int = 1) -> bool:
+    result: bool = False
+    try:
+        value = int(user_input)
+        if value < min_value:
+            print(f"The minimum value is {min_value}.")
+        else:
+            result = True
+    except ValueError:
+        print("Please enter a number.")
+
+    return result
+
+
+def read_int(prompt: str) -> int:
     while True:
         user_input = input(prompt)
-        try:
-            value = int(user_input)
-            if value < min_value:
-                print(f"The minimum value is {min_value}.")
-            else:
-                return value
-        except ValueError:
-            print("Please enter a number.")
+        if is_valid_int(user_input, min_value=1):
+            return int(user_input)
 
 
 def main() -> None:
-    number_of_words = read_int("Number of words: ", min_value=1)
+    number_of_words = read_int("Number of words: ")
     passphrase = Passphrase(number_of_words)
 
 
