@@ -1,6 +1,6 @@
 from pytest import MonkeyPatch
 
-from diceware import is_valid_int, read_delimiter, read_int
+from diceware import is_valid_int, read_delimiter, read_number_of_words
 
 
 def test_is_valid_int_when_input_is_valid():
@@ -25,14 +25,21 @@ def test_is_valid_int_when_input_is_too_low(capfd):
     assert "The minimum value is 3" in out
 
 
-def test_read_int_valid_input(monkeypatch: MonkeyPatch):
-    valid_input = "6"
+def test_read_number_of_words_valid_input(monkeypatch: MonkeyPatch):
+    valid_input = "7"
     monkeypatch.setattr("builtins.input", lambda _: valid_input)
-    result = read_int("Enter a number: ")
+    result = read_number_of_words("Number of words: ")
+    assert result == 7
+
+
+def test_read_number_of_words_empty_input_defaults(monkeypatch: MonkeyPatch):
+    empty_input = ""
+    monkeypatch.setattr("builtins.input", lambda _: empty_input)
+    result = read_number_of_words("Number of words: ")
     assert result == 6
 
 
-def test_read_delimiter(monkeypatch: MonkeyPatch):
+def test_read_delimiter_with_input(monkeypatch: MonkeyPatch):
     input = "_"
     monkeypatch.setattr("builtins.input", lambda _: input)
     result = read_delimiter("Delimiter: ")

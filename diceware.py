@@ -1,10 +1,17 @@
+PASSPHRASE_DEFAULTS: dict = {
+    "number_of_words": 6,
+    "min_words": 1,
+    "delimiter": "",
+}
+
+
 class Passphrase:
     def __init__(self, number_of_words: int, delimiter: str) -> None:
         self.number_of_words: int = number_of_words
         self.delimiter: str = delimiter
 
 
-def is_valid_int(user_input: str, min_value: int = 1) -> bool:
+def is_valid_int(user_input: str, min_value) -> bool:
     result: bool = False
     try:
         value = int(user_input)
@@ -18,10 +25,15 @@ def is_valid_int(user_input: str, min_value: int = 1) -> bool:
     return result
 
 
-def read_int(prompt: str) -> int:
+def read_number_of_words(prompt: str):
     while True:
         user_input = input(prompt)
-        if is_valid_int(user_input, min_value=1):
+        if user_input == "":
+            return PASSPHRASE_DEFAULTS["number_of_words"]
+        if is_valid_int(
+            user_input,
+            min_value=PASSPHRASE_DEFAULTS["min_words"],
+        ):
             return int(user_input)
 
 
@@ -31,8 +43,12 @@ def read_delimiter(prompt: str) -> str:
 
 
 def main() -> None:
-    number_of_words = read_int("Number of words: ")
-    delimiter = read_delimiter("Delimiter: ")
+    number_of_words = read_number_of_words(
+        f"Number of words (default={PASSPHRASE_DEFAULTS['number_of_words']}): "
+    )
+    delimiter = read_delimiter(
+        f"Delimiter (default=\"{PASSPHRASE_DEFAULTS['delimiter']}\"): "
+    )
     passphrase = Passphrase(number_of_words, delimiter)
 
 
