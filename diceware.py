@@ -1,6 +1,7 @@
 class Passphrase:
-    def __init__(self, number_of_words: int) -> None:
+    def __init__(self, number_of_words: int, delimiter: str) -> None:
         self.number_of_words: int = number_of_words
+        self.delimiter: str = delimiter
 
 
 def is_valid_int(user_input: str, min_value: int = 1) -> bool:
@@ -24,9 +25,15 @@ def read_int(prompt: str) -> int:
             return int(user_input)
 
 
+def read_delimiter(prompt: str) -> str:
+    delimiter: str = input(prompt)
+    return delimiter
+
+
 def main() -> None:
     number_of_words = read_int("Number of words: ")
-    passphrase = Passphrase(number_of_words)
+    delimiter = read_delimiter("Delimiter: ")
+    passphrase = Passphrase(number_of_words, delimiter)
 
 
 if __name__ == "__main__":

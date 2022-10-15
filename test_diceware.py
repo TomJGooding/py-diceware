@@ -1,6 +1,6 @@
 from pytest import MonkeyPatch
 
-from diceware import is_valid_int, read_int
+from diceware import is_valid_int, read_delimiter, read_int
 
 
 def test_is_valid_int_when_input_is_valid():
@@ -30,3 +30,10 @@ def test_read_int_valid_input(monkeypatch: MonkeyPatch):
     monkeypatch.setattr("builtins.input", lambda _: valid_input)
     result = read_int("Enter a number: ")
     assert result == 6
+
+
+def test_read_delimiter(monkeypatch: MonkeyPatch):
+    input = "_"
+    monkeypatch.setattr("builtins.input", lambda _: input)
+    result = read_delimiter("Delimiter: ")
+    assert result == "_"
