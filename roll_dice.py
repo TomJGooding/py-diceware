@@ -19,9 +19,20 @@ class Die:
         else:
             self.roll()
 
-    def roll(self):
+    def roll(self) -> int:
         self.face = secrets.randbelow(self.sides) + 1
         return self.face
 
-    def __str__(self):
+    def __str__(self) -> str:
         return str(self.face)
+
+
+class Dice:
+    def __init__(self, num_dice: int = 5, sides: int = 6) -> None:
+        self.num_dice: int = num_dice
+        self.dice: list[Die] = []
+        for _ in range(num_dice):
+            self.dice.append(Die(sides=sides))
+
+    def __str__(self) -> str:
+        return "".join([f"{die}" for die in self.dice])
