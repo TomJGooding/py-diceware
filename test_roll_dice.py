@@ -1,4 +1,4 @@
-from roll_dice import Die
+from roll_dice import Dice, Die
 
 
 def test_die_with_set_face():
@@ -17,3 +17,16 @@ def test_die_to_string(capfd):
     print(die)
     out, _ = capfd.readouterr()
     assert out == "3\n"
+
+
+def test_dice():
+    dice = Dice(num_dice=5, sides=1)
+    for die in dice.dice:
+        assert die.face == 1
+
+
+def test_dice_to_string(capfd):
+    dice = Dice(num_dice=5, sides=1)
+    print(dice)
+    out, _ = capfd.readouterr()
+    assert out == "11111\n"
