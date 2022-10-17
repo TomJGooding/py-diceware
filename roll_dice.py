@@ -30,9 +30,20 @@ class Die:
 class Dice:
     def __init__(self, num_dice: int = 5, sides: int = 6) -> None:
         self.num_dice: int = num_dice
-        self.dice: list[Die] = []
+        self.faces: list[Die] = []
         for _ in range(num_dice):
-            self.dice.append(Die(sides=sides))
+            self.faces.append(Die(sides=sides))
 
-    def __str__(self) -> str:
-        return "".join([f"{die}" for die in self.dice])
+    def __repr__(self) -> str:
+        return "".join([str(face) for face in self.faces])
+
+
+def roll_dice(num_rolls: int, num_dice: int = 5, sides: int = 6) -> list[Dice]:
+    dice_rolls: list[Dice] = []
+    print("\nRolling dice...")
+    for _ in range(num_rolls):
+        dice = Dice(num_dice, sides)
+        print(dice)
+        dice_rolls.append(dice)
+
+    return dice_rolls
