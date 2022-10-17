@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
 from roll_dice import roll_dice
+from wordlist import WordList
 
 TITLE_BANNER = r"""
     _______
@@ -20,6 +21,7 @@ class PassphraseDefaults:
     min_words: int
     delimiter: str
     capitalisation: bool
+    wordlist: WordList
 
 
 PASSPHRASE_DEFAULTS = PassphraseDefaults(
@@ -27,6 +29,7 @@ PASSPHRASE_DEFAULTS = PassphraseDefaults(
     min_words=1,
     delimiter="",
     capitalisation=True,
+    wordlist=WordList("diceware.wordlist.asc"),
 )
 
 
@@ -36,6 +39,7 @@ class Passphrase:
         number_of_words: int,
         delimiter: str,
         capitalisation: bool,
+        wordlist: WordList,
     ) -> None:
         self.number_of_words: int = number_of_words
         self.delimiter: str = delimiter
@@ -103,9 +107,15 @@ def main() -> None:
         f'Delimiter (default="{PASSPHRASE_DEFAULTS.delimiter}"): '
     )
     capitalisation = read_capitalisation("Capitalise words? [Y/n] ")
+    wordlist = PASSPHRASE_DEFAULTS.wordlist
 
     roll_dice(number_of_words)
-    passphrase = Passphrase(number_of_words, delimiter, capitalisation)
+    passphrase = Passphrase(
+        number_of_words,
+        delimiter,
+        capitalisation,
+        wordlist,
+    )
 
 
 if __name__ == "__main__":
