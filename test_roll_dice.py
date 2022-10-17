@@ -1,4 +1,4 @@
-from roll_dice import Dice, Die
+from roll_dice import Dice, Die, roll_dice
 
 
 def test_die_with_set_face():
@@ -21,7 +21,7 @@ def test_die_to_string(capfd):
 
 def test_dice():
     dice = Dice(num_dice=5, sides=1)
-    for die in dice.dice:
+    for die in dice.faces:
         assert die.face == 1
 
 
@@ -30,3 +30,27 @@ def test_dice_to_string(capfd):
     print(dice)
     out, _ = capfd.readouterr()
     assert out == "11111\n"
+
+
+def test_roll_dice_6_rolls_5_dice():
+    num_rolls = 6
+    num_dice = 5
+    faces = 1
+
+    dice_rolls = roll_dice(num_rolls, num_dice, faces)
+    assert len(dice_rolls) == 6
+    for dice in dice_rolls:
+        for die in dice.faces:
+            assert die.face == 1
+
+
+def test_roll_dice_100_rolls_100_dice():
+    num_rolls = 100
+    num_dice = 100
+    faces = 1
+
+    dice_rolls = roll_dice(num_rolls, num_dice, faces)
+    assert len(dice_rolls) == 100
+    for dice in dice_rolls:
+        for die in dice.faces:
+            assert die.face == 1

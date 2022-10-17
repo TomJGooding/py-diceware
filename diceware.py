@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+from roll_dice import roll_dice
+
 TITLE_BANNER = r"""
     _______
   /\       \                            _ _
@@ -30,7 +32,10 @@ PASSPHRASE_DEFAULTS = PassphraseDefaults(
 
 class Passphrase:
     def __init__(
-        self, number_of_words: int, delimiter: str, capitalisation: bool
+        self,
+        number_of_words: int,
+        delimiter: str,
+        capitalisation: bool,
     ) -> None:
         self.number_of_words: int = number_of_words
         self.delimiter: str = delimiter
@@ -89,6 +94,8 @@ def read_capitalisation(prompt: str) -> bool:
 
 def main() -> None:
     print(TITLE_BANNER)
+
+    # Read passphrase options from the user
     number_of_words = read_number_of_words(
         f"Number of words (default={PASSPHRASE_DEFAULTS.number_of_words}): "
     )
@@ -96,6 +103,8 @@ def main() -> None:
         f'Delimiter (default="{PASSPHRASE_DEFAULTS.delimiter}"): '
     )
     capitalisation = read_capitalisation("Capitalise words? [Y/n] ")
+
+    roll_dice(number_of_words)
     passphrase = Passphrase(number_of_words, delimiter, capitalisation)
 
 
