@@ -1,12 +1,16 @@
+import pytest
 from pytest import MonkeyPatch
 
 from diceware import (
+    PASSPHRASE_DEFAULTS,
+    Passphrase,
     is_valid_int,
     is_valid_y_or_n,
     read_capitalisation,
     read_delimiter,
     read_number_of_words,
 )
+from roll_dice import roll_dice
 
 
 def test_is_valid_int_when_input_is_valid():
@@ -85,3 +89,49 @@ def test_read_capitalisation_empty_input_defaults(monkeypatch: MonkeyPatch):
     monkeypatch.setattr("builtins.input", lambda _: input)
     result = read_capitalisation("Capitalisation? [Y/n] ")
     assert result is True
+
+
+def test_passphrase_lookup_words():
+    dice_rolls = roll_dice(num_rolls=6, num_dice=5, sides=1)
+    passphrase = Passphrase(
+        PASSPHRASE_DEFAULTS.number_of_words,
+        PASSPHRASE_DEFAULTS.delimiter,
+        PASSPHRASE_DEFAULTS.capitalisation,
+        dice_rolls,
+        PASSPHRASE_DEFAULTS.wordlist,
+    )
+    assert passphrase.words == ["a", "a", "a", "a", "a", "a"]
+    assert len(passphrase.words) == 6
+
+
+def test_passphrase_lookup_words_with_set_dice():
+    dice_rolls = roll_dice(num_rolls=6)
+    passphrase = Passphrase(
+        PASSPHRASE_DEFAULTS.number_of_words,
+        PASSPHRASE_DEFAULTS.delimiter,
+        PASSPHRASE_DEFAULTS.capitalisation,
+        dice_rolls,
+        PASSPHRASE_DEFAULTS.wordlist,
+    )
+
+    passphrase.dice_rolls = [16665, 15653, 56322, 35616, 65224, 64326]
+    correct_words = ["cleft", "cam", "synod", "lacy", "yr", "wok"]
+    assert len(passphrase.words) == 6
+    for idx, dice in enumerate(passphrase.dice_rolls):
+        assert passphrase.lookup_word(dice) == correct_words[idx]
+
+
+def test_passphrase_lookup_words_lookup_error():
+    dice_rolls = roll_dice(num_rolls=1)
+    passphrase = Passphrase(
+        PASSPHRASE_DEFAULTS.number_of_words,
+        PASSPHRASE_DEFAULTS.delimiter,
+        PASSPHRASE_DEFAULTS.capitalisation,
+        dice_rolls,
+        PASSPHRASE_DEFAULTS.wordlist,
+    )
+
+    passphrase.dice_rolls = ["This does not appear in the wordlist!"]
+    with pytest.raises(LookupError):
+        for dice in passphrase.dice_rolls:
+            passphrase.lookup_word(dice)

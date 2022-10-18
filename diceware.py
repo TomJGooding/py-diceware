@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from roll_dice import roll_dice
+from roll_dice import Dice, roll_dice
 from wordlist import WordList
 
 TITLE_BANNER = r"""
@@ -39,11 +39,29 @@ class Passphrase:
         number_of_words: int,
         delimiter: str,
         capitalisation: bool,
+        dice_rolls: list[Dice],
         wordlist: WordList,
     ) -> None:
         self.number_of_words: int = number_of_words
         self.delimiter: str = delimiter
         self.capitalisation: bool = capitalisation
+        self.dice_rolls = dice_rolls
+        self.wordlist: WordList = wordlist
+        self.words: list[str] = [self.lookup_word(dice) for dice in dice_rolls]
+
+    def lookup_word(self, dice) -> str:
+        wordlist = self.wordlist.path / self.wordlist.filename
+        word = None
+        with open(wordlist, "r") as f:
+            for line in f:
+                if line.startswith(str(dice)):
+                    print(line.rstrip())
+                    _, word = line.split()
+
+        if word is None:
+            raise (LookupError(f"{dice} not found in word list"))
+        else:
+            return word
 
 
 def is_valid_int(user_input: str, min_value: int) -> bool:
@@ -100,20 +118,24 @@ def main() -> None:
     print(TITLE_BANNER)
 
     # Read passphrase options from the user
-    number_of_words = read_number_of_words(
+    number_of_words: int = read_number_of_words(
         f"Number of words (default={PASSPHRASE_DEFAULTS.number_of_words}): "
     )
-    delimiter = read_delimiter(
+    delimiter: str = read_delimiter(
         f'Delimiter (default="{PASSPHRASE_DEFAULTS.delimiter}"): '
     )
-    capitalisation = read_capitalisation("Capitalise words? [Y/n] ")
+    capitalisation: bool = read_capitalisation("Capitalise words? [Y/n] ")
     wordlist = PASSPHRASE_DEFAULTS.wordlist
 
-    roll_dice(number_of_words)
+    print("\nRolling dice...")
+    dice_rolls: list[Dice] = roll_dice(number_of_words)
+
+    print("\nLooking up words...")
     passphrase = Passphrase(
         number_of_words,
         delimiter,
         capitalisation,
+        dice_rolls,
         wordlist,
     )
 
