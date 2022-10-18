@@ -40,7 +40,6 @@ class Dice:
 
 def roll_dice(num_rolls: int, num_dice: int = 5, sides: int = 6) -> list[Dice]:
     dice_rolls: list[Dice] = []
-    print("\nRolling dice...")
     for _ in range(num_rolls):
         dice = Dice(num_dice, sides)
         print(dice)
