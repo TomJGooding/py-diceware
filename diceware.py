@@ -48,6 +48,7 @@ class Passphrase:
         self.dice_rolls = dice_rolls
         self.wordlist: WordList = wordlist
         self.words: list[str] = [self.lookup_word(dice) for dice in dice_rolls]
+        self.passphrase = self.generate_passphrase()
 
     def lookup_word(self, dice) -> str:
         wordlist = self.wordlist.path / self.wordlist.filename
@@ -62,6 +63,16 @@ class Passphrase:
             raise (LookupError(f"{dice} not found in word list"))
         else:
             return word
+
+    def generate_passphrase(self) -> str:
+        words = self.words
+        if self.capitalisation:
+            words = [word.capitalize() for word in words]
+
+        return self.delimiter.join(words)
+
+    def __repr__(self) -> str:
+        return self.passphrase
 
 
 def is_valid_int(user_input: str, min_value: int) -> bool:
@@ -138,6 +149,9 @@ def main() -> None:
         dice_rolls,
         wordlist,
     )
+
+    print("\nYour passphrase is:")
+    print(passphrase)
 
 
 if __name__ == "__main__":
