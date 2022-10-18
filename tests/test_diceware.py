@@ -135,3 +135,41 @@ def test_passphrase_lookup_words_lookup_error():
     with pytest.raises(LookupError):
         for dice in passphrase.dice_rolls:
             passphrase.lookup_word(dice)
+
+
+def test_passphrase_generate_passphrase_with_defaults():
+    dice_rolls = roll_dice(num_rolls=6, num_dice=5, sides=1)
+    passphrase = Passphrase(
+        PASSPHRASE_DEFAULTS.number_of_words,
+        PASSPHRASE_DEFAULTS.delimiter,
+        PASSPHRASE_DEFAULTS.capitalisation,
+        dice_rolls,
+        PASSPHRASE_DEFAULTS.wordlist,
+    )
+    assert passphrase.generate_passphrase() == "AAAAAA"
+
+
+def test_passphrase_generate_passphrase_with_delimiter():
+    delimiter = "_"
+    dice_rolls = roll_dice(num_rolls=6, num_dice=5, sides=1)
+    passphrase = Passphrase(
+        PASSPHRASE_DEFAULTS.number_of_words,
+        delimiter,
+        PASSPHRASE_DEFAULTS.capitalisation,
+        dice_rolls,
+        PASSPHRASE_DEFAULTS.wordlist,
+    )
+    assert passphrase.generate_passphrase() == "A_A_A_A_A_A"
+
+
+def test_passphrase_generate_passphrase_no_capitalisation():
+    capitalisation = False
+    dice_rolls = roll_dice(num_rolls=6, num_dice=5, sides=1)
+    passphrase = Passphrase(
+        PASSPHRASE_DEFAULTS.number_of_words,
+        PASSPHRASE_DEFAULTS.delimiter,
+        capitalisation,
+        dice_rolls,
+        PASSPHRASE_DEFAULTS.wordlist,
+    )
+    assert passphrase.generate_passphrase() == "aaaaaa"
