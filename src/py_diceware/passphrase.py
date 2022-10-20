@@ -1,5 +1,5 @@
-from roll_dice import Dice
-from wordlist import WordList
+from py_diceware.roll_dice import Dice
+from py_diceware.wordlist import WordList
 
 
 class Passphrase:
