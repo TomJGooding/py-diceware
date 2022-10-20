@@ -1,8 +1,8 @@
 import pytest
 
-from config import PASSPHRASE_DEFAULTS
-from passphrase import Passphrase
-from roll_dice import roll_dice
+from py_diceware.config import PASSPHRASE_DEFAULTS
+from py_diceware.passphrase import Passphrase
+from py_diceware.roll_dice import roll_dice
 
 
 def test_passphrase_lookup_words():

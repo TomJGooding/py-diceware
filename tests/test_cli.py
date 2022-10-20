@@ -1,6 +1,6 @@
 from pytest import MonkeyPatch
 
-from cli import (
+from py_diceware.cli import (
     is_valid_int,
     is_valid_y_or_n,
     read_capitalisation,

@@ -1,4 +1,4 @@
-from roll_dice import Dice, Die, roll_dice
+from py_diceware.roll_dice import Dice, Die, roll_dice
 
 
 def test_die_with_set_face():

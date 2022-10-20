@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from wordlist import WordList
+from py_diceware.wordlist import WordList
 
 
 @dataclass

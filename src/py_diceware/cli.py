@@ -1,4 +1,6 @@
-from config import PASSPHRASE_DEFAULTS
+from py_diceware.config import PASSPHRASE_DEFAULTS
+from py_diceware.passphrase import Passphrase
+from py_diceware.roll_dice import Dice, roll_dice
 
 TITLE_BANNER = r"""
     _______
@@ -60,3 +62,32 @@ def read_capitalisation(prompt: str) -> bool:
             return PASSPHRASE_DEFAULTS.capitalisation
         if is_valid_y_or_n(user_input):
             return True if user_input.lower() in ("y", "yes") else False
+
+
+def main() -> None:
+    print(TITLE_BANNER)
+
+    # Read passphrase options from the user
+    number_of_words: int = read_number_of_words(
+        f"Number of words (default={PASSPHRASE_DEFAULTS.number_of_words}): "
+    )
+    delimiter: str = read_delimiter(
+        f'Delimiter (default="{PASSPHRASE_DEFAULTS.delimiter}"): '
+    )
+    capitalisation: bool = read_capitalisation("Capitalise words? [Y/n] ")
+    wordlist = PASSPHRASE_DEFAULTS.wordlist
+
+    print("\nRolling dice...")
+    dice_rolls: list[Dice] = roll_dice(number_of_words)
+
+    print("\nLooking up words...")
+    passphrase = Passphrase(
+        number_of_words,
+        delimiter,
+        capitalisation,
+        dice_rolls,
+        wordlist,
+    )
+
+    print("\nYour passphrase is:")
+    print(passphrase)
