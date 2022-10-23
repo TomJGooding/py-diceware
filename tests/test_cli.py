@@ -1,87 +1,79 @@
-from pytest import MonkeyPatch
+from click.testing import CliRunner
 
-from py_diceware.cli import (
-    is_valid_int,
-    is_valid_y_or_n,
-    read_capitalisation,
-    read_delimiter,
-    read_number_of_words,
-)
+from py_diceware.cli import main
 
+"""These cli tests rely on:
+    - the passphrase being the final line in the output
+    - the diceware word list not containing any underscores
+"""
 
-def test_is_valid_int_when_input_is_valid():
-    valid_input = "6"
-    result = is_valid_int(valid_input, min_value=6)
-    assert result is True
+PASSPHRASE_OUTPUT_LINE: int = -1
 
 
-def test_is_valid_int_when_input_is_not_a_number(capfd):
-    invalid_input = "This is not a number!"
-    result = is_valid_int(invalid_input, min_value=3)
-    out, _ = capfd.readouterr()
-    assert result is False
-    assert "Please enter a number." in out
+def test_cli_passphrase_delimiter():
+    runner = CliRunner()
+    result = runner.invoke(main, "--delimiter '_'")
+    passphrase_output = result.output.splitlines()[PASSPHRASE_OUTPUT_LINE]
+    assert result.exit_code == 0
+    assert "_" in passphrase_output
 
 
-def test_is_valid_int_when_input_is_too_low(capfd):
-    invalid_input = "1"
-    result = is_valid_int(invalid_input, min_value=3)
-    out, _ = capfd.readouterr()
-    assert result is False
-    assert "The minimum value is 3" in out
+def test_cli_prompting_number_of_words_if_not_provided():
+    runner = CliRunner()
+    result = runner.invoke(main, "--delimiter '_'", input="8\n")
+    passphrase_output = result.output.splitlines()[PASSPHRASE_OUTPUT_LINE]
+    passphrase_words = passphrase_output.split("_")
+    assert result.exit_code == 0
+    assert not result.exception
+    assert len(passphrase_words) == 8
 
 
-def test_read_number_of_words_valid_input(monkeypatch: MonkeyPatch):
-    valid_input = "7"
-    monkeypatch.setattr("builtins.input", lambda _: valid_input)
-    result = read_number_of_words("Number of words: ")
-    assert result == 7
+def test_cli_number_of_words():
+    runner = CliRunner()
+    result = runner.invoke(main, "--words 5 --delimiter '_'")
+    passphrase_output = result.output.splitlines()[PASSPHRASE_OUTPUT_LINE]
+    passphrase_words = passphrase_output.split("_")
+    assert result.exit_code == 0
+    assert len(passphrase_words) == 5
 
 
-def test_read_number_of_words_empty_input_defaults(monkeypatch: MonkeyPatch):
-    empty_input = ""
-    monkeypatch.setattr("builtins.input", lambda _: empty_input)
-    result = read_number_of_words("Number of words: ")
-    assert result == 6
+def test_cli_number_of_words_input_not_in_range():
+    runner = CliRunner()
+    result = runner.invoke(main, "--words 0")
+    assert result.exit_code == 2  # usage error
 
 
-def test_read_delimiter_with_input(monkeypatch: MonkeyPatch):
-    input = "_"
-    monkeypatch.setattr("builtins.input", lambda _: input)
-    result = read_delimiter("Delimiter: ")
-    assert result == "_"
+def test_cli_number_of_words_input_not_a_number():
+    runner = CliRunner()
+    result = runner.invoke(main, "--words 'this is not a number!'")
+    assert result.exit_code == 2  # usage error
 
 
-def test_is_valid_y_or_n_with_valid_input():
-    input = "Yes"
-    result = is_valid_y_or_n(input)
-    assert result is True
+def test_cli_capitalisation():
+    runner = CliRunner()
+    result = runner.invoke(main, "--words 5 --delimiter '_' --caps")
+    passphrase_output = result.output.splitlines()[PASSPHRASE_OUTPUT_LINE]
+    passphrase_words = passphrase_output.split("_")
+    assert result.exit_code == 0
+    for word in passphrase_words:
+        if word[0].isalpha():
+            assert word[0].isupper()
 
 
-def test_is_valid_y_or_n_with_invalid_input(capfd):
-    input = "This string is not [y]es or [n]o!"
-    result = is_valid_y_or_n(input)
-    out, _ = capfd.readouterr()
-    assert result is False
-    assert "Please answer yes or no." in out
+def test_cli_no_capitalisation():
+    runner = CliRunner()
+    result = runner.invoke(main, "--words 5 --delimiter '_' --no-caps")
+    passphrase_output = result.output.splitlines()[PASSPHRASE_OUTPUT_LINE]
+    passphrase_words = passphrase_output.split("_")
+    assert result.exit_code == 0
+    for word in passphrase_words:
+        if word[0].isalpha():
+            assert word[0].islower()
 
 
-def test_read_capitalisation_with_y_input(monkeypatch: MonkeyPatch):
-    input = "yEs"
-    monkeypatch.setattr("builtins.input", lambda _: input)
-    result = read_capitalisation("Capitalisation? [Y/n] ")
-    assert result is True
-
-
-def test_read_capitalisation_with_n_input(monkeypatch: MonkeyPatch):
-    input = "nO"
-    monkeypatch.setattr("builtins.input", lambda _: input)
-    result = read_capitalisation("Capitalisation? [Y/n] ")
-    assert result is False
-
-
-def test_read_capitalisation_empty_input_defaults(monkeypatch: MonkeyPatch):
-    input = ""
-    monkeypatch.setattr("builtins.input", lambda _: input)
-    result = read_capitalisation("Capitalisation? [Y/n] ")
-    assert result is True
+def test_cli_no_delimiter():
+    runner = CliRunner()
+    result = runner.invoke(main, "--words 5 --delimiter '' --caps")
+    passphrase_output = result.output.splitlines()[PASSPHRASE_OUTPUT_LINE]
+    assert result.exit_code == 0
+    assert len(passphrase_output.split()) == 1
