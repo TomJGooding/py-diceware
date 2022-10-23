@@ -25,7 +25,6 @@ class Passphrase:
         with open(wordlist, "r") as f:
             for line in f:
                 if line.startswith(str(dice)):
-                    print(line.rstrip())
                     _, word = line.split()
 
         if word is None:

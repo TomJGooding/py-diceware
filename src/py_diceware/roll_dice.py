@@ -42,7 +42,6 @@ def roll_dice(num_rolls: int, num_dice: int = 5, sides: int = 6) -> list[Dice]:
     dice_rolls: list[Dice] = []
     for _ in range(num_rolls):
         dice = Dice(num_dice, sides)
-        print(dice)
         dice_rolls.append(dice)
 
     return dice_rolls

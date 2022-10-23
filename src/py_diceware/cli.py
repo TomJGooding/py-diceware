@@ -1,3 +1,5 @@
+import click
+
 from py_diceware.config import PASSPHRASE_DEFAULTS
 from py_diceware.passphrase import Passphrase
 from py_diceware.roll_dice import Dice, roll_dice
@@ -14,80 +16,51 @@ TITLE_BANNER = r"""
 """
 
 
-def is_valid_int(user_input: str, min_value: int) -> bool:
-    result: bool = False
-    try:
-        value = int(user_input)
-        if value < min_value:
-            print(f"The minimum value is {min_value}.")
-        else:
-            result = True
-    except ValueError:
-        print("Please enter a number.")
+@click.command()
+@click.option(
+    "-w",
+    "--words",
+    type=click.IntRange(min=1),
+    default=PASSPHRASE_DEFAULTS.number_of_words,
+    prompt="Number of words",
+    help="Number of words for passphrase.",
+    show_default=True,
+)
+@click.option(
+    "-d",
+    "--delimiter",
+    default=PASSPHRASE_DEFAULTS.delimiter,
+    prompt=True,
+    prompt_required=False,
+    help="Delimiter to separate words in passphrase.",
+    show_default=True,
+)
+@click.option(
+    "--caps/--no-caps",
+    default=PASSPHRASE_DEFAULTS.capitalisation,
+    help="Capitalise words in passphrase.",
+    show_default=True,
+)
+def main(words, delimiter, caps):
+    """Diceware passphrase generator."""
+    click.echo(TITLE_BANNER)
 
-    return result
+    click.echo(f"Rolling dice {words} times...")
+    dice_rolls: list[Dice] = roll_dice(words)
+    for dice in dice_rolls:
+        click.echo(dice)
 
-
-def is_valid_y_or_n(user_input: str) -> bool:
-    result: bool = False
-    if user_input.lower() not in ("y", "n", "yes", "no"):
-        print("Please answer yes or no.")
-    else:
-        result = True
-
-    return result
-
-
-def read_number_of_words(prompt: str) -> int:
-    while True:
-        user_input = input(prompt)
-        if user_input == "":
-            return PASSPHRASE_DEFAULTS.number_of_words
-        if is_valid_int(
-            user_input,
-            min_value=PASSPHRASE_DEFAULTS.min_words,
-        ):
-            return int(user_input)
-
-
-def read_delimiter(prompt: str) -> str:
-    delimiter: str = input(prompt)
-    return delimiter
-
-
-def read_capitalisation(prompt: str) -> bool:
-    while True:
-        user_input = input(prompt)
-        if user_input == "":
-            return PASSPHRASE_DEFAULTS.capitalisation
-        if is_valid_y_or_n(user_input):
-            return True if user_input.lower() in ("y", "yes") else False
-
-
-def main() -> None:
-    print(TITLE_BANNER)
-
-    # Read passphrase options from the user
-    number_of_words: int = read_number_of_words(
-        f"Number of words (default={PASSPHRASE_DEFAULTS.number_of_words}): "
-    )
-    delimiter: str = read_delimiter(
-        f'Delimiter (default="{PASSPHRASE_DEFAULTS.delimiter}"): '
-    )
-    capitalisation: bool = read_capitalisation("Capitalise words? [Y/n] ")
+    click.echo("\nLooking up words...")
     wordlist = PASSPHRASE_DEFAULTS.wordlist
-
-    print("\nRolling dice...")
-    dice_rolls: list[Dice] = roll_dice(number_of_words)
-
-    print("\nLooking up words...")
     passphrase = Passphrase(
-        number_of_words,
+        words,
         delimiter,
-        capitalisation,
+        caps,
         dice_rolls,
         wordlist,
     )
+    for idx, word in enumerate(passphrase.words):
+        click.echo(f"{dice_rolls[idx]}  {word}")
 
-    print("\nYour passphrase is:")
-    print(passphrase)
+    click.echo("\nYour passphrase is:")
+    click.echo(passphrase)
