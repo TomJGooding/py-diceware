@@ -16,6 +16,14 @@ TITLE_BANNER = r"""
 """
 
 
+def deactivate_prompts(ctx, param, value):
+    if value:
+        for p in ctx.command.params:
+            if isinstance(p, click.Option) and p.prompt is not None:
+                p.prompt = None
+    return value
+
+
 @click.command()
 @click.option(
     "-w",
@@ -41,16 +49,32 @@ TITLE_BANNER = r"""
     help="Capitalise words in passphrase.",
     show_default=True,
 )
-def main(words, delimiter, caps):
+@click.option(
+    "-q",
+    "--quiet",
+    is_flag=True,
+    is_eager=True,
+    callback=deactivate_prompts,
+    help="Only output the passphrase. Silence prompts and other output.",
+    show_default=True,
+)
+def main(words, delimiter, caps, quiet):
     """Diceware passphrase generator."""
-    click.echo(TITLE_BANNER)
+    if not quiet:
+        click.echo(TITLE_BANNER)
 
-    click.echo(f"Rolling dice {words} times...")
+    if not quiet:
+        click.echo(f"Rolling dice {words} times...")
+
     dice_rolls: list[Dice] = roll_dice(words)
-    for dice in dice_rolls:
-        click.echo(dice)
 
-    click.echo("\nLooking up words...")
+    if not quiet:
+        for dice in dice_rolls:
+            click.echo(dice)
+
+    if not quiet:
+        click.echo("\nLooking up words...")
+
     wordlist = PassphraseDefaults.wordlist
     passphrase = Passphrase(
         words,
@@ -59,8 +83,12 @@ def main(words, delimiter, caps):
         dice_rolls,
         wordlist,
     )
-    for idx, word in enumerate(passphrase.words):
-        click.echo(f"{dice_rolls[idx]}  {word}")
 
-    click.echo("\nYour passphrase is:")
+    if not quiet:
+        for idx, word in enumerate(passphrase.words):
+            click.echo(f"{dice_rolls[idx]}  {word}")
+
+    if not quiet:
+        click.echo("\nYour passphrase is:")
+
     click.echo(passphrase)

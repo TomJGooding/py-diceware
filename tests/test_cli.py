@@ -1,6 +1,7 @@
 from click.testing import CliRunner
 
 from py_diceware.cli import main
+from py_diceware.config import PassphraseDefaults
 
 """These cli tests rely on:
     - the passphrase being the final line in the output
@@ -77,3 +78,23 @@ def test_cli_no_delimiter():
     passphrase_output = result.output.splitlines()[PASSPHRASE_OUTPUT_LINE]
     assert result.exit_code == 0
     assert len(passphrase_output.split()) == 1
+
+
+def test_cli_quiet_mode():
+    runner = CliRunner()
+    result = runner.invoke(main, "--words 10 --delimiter '_' --quiet")
+    full_output = result.output.splitlines()
+    passphrase_words = full_output[0].split("_")
+    assert result.exit_code == 0
+    assert len(full_output) == 1
+    assert len(passphrase_words) == 10
+
+
+def test_cli_quiet_mode_skips_number_words_prompt():
+    runner = CliRunner()
+    result = runner.invoke(main, "--delimiter '_' --quiet")
+    full_output = result.output.splitlines()
+    passphrase_words = full_output[0].split("_")
+    assert result.exit_code == 0
+    assert len(full_output) == 1
+    assert len(passphrase_words) == PassphraseDefaults.number_of_words
