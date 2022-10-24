@@ -1,6 +1,6 @@
 import click
 
-from py_diceware.config import PASSPHRASE_DEFAULTS
+from py_diceware.config import PassphraseDefaults
 from py_diceware.passphrase import Passphrase
 from py_diceware.roll_dice import Dice, roll_dice
 
@@ -21,7 +21,7 @@ TITLE_BANNER = r"""
     "-w",
     "--words",
     type=click.IntRange(min=1),
-    default=PASSPHRASE_DEFAULTS.number_of_words,
+    default=PassphraseDefaults.number_of_words,
     prompt="Number of words",
     help="Number of words for passphrase.",
     show_default=True,
@@ -29,7 +29,7 @@ TITLE_BANNER = r"""
 @click.option(
     "-d",
     "--delimiter",
-    default=PASSPHRASE_DEFAULTS.delimiter,
+    default=PassphraseDefaults.delimiter,
     prompt=True,
     prompt_required=False,
     help="Delimiter to separate words in passphrase.",
@@ -37,7 +37,7 @@ TITLE_BANNER = r"""
 )
 @click.option(
     "--caps/--no-caps",
-    default=PASSPHRASE_DEFAULTS.capitalisation,
+    default=PassphraseDefaults.capitalisation,
     help="Capitalise words in passphrase.",
     show_default=True,
 )
@@ -51,7 +51,7 @@ def main(words, delimiter, caps):
         click.echo(dice)
 
     click.echo("\nLooking up words...")
-    wordlist = PASSPHRASE_DEFAULTS.wordlist
+    wordlist = PassphraseDefaults.wordlist
     passphrase = Passphrase(
         words,
         delimiter,
