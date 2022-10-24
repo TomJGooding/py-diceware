@@ -9,6 +9,7 @@ Diceware passphrase generator built with Python.
   - [Delimiter](#delimiter)
   - [Capitalisation](#capitalisation)
   - [Quiet Mode](#quiet-mode)
+- [Security](#security)
 - [Licence](#licence)
 
 ## Usage
@@ -139,6 +140,46 @@ UsdaChiveAlaskaWareTwSethShuckDeform
 If the number of words is not provided from the command line in quiet mode, the generated passphrase
 will use the default of 6 words which is recommended for most users
 (see the above [Number of Words](#number-of-words) section for more info).
+
+## Security
+
+**USE PY-DICEWARE TO GENERATE PASSPHRASES AT YOUR OWN RISK**
+
+According to the [Diceware FAQ](https://theworld.com/%7Ereinhold/dicewarefaq.html#someoneknows),
+the Diceware method is secure even if an attacker knows:
+
+- that you used Diceware to pick your passphrase
+- the number of words in your passphrase
+- the word list used.
+
+The security of the Diceware method is based on
+"the huge number of combinations that an attacker must search through, even with that knowledge".
+
+### Randomness
+
+py-diceware utilises Python's [secrets](https://docs.python.org/3/library/secrets.html) module,
+which is used for "generating cryptographically strong random numbers suitable for managing data
+such as passwords, account authentication, security tokens, and related secrets".
+
+This is opposed to the [random](https://docs.python.org/3/library/random.html#module-random) module,
+which is sometimes dangerously suggested for generating sensitive information such as passwords.
+The random module generates only pseudo-random numbers
+and is designed for modelling and simulation, not security or cryptography.
+
+See [PEP 506](https://peps.python.org/pep-0506/) for more info.
+
+The original Diceware method recommends:
+"Do not use a computer program or electronic dice generator.
+There is no easy way to be sure they are random enough."
+
+Python's [secrets](https://docs.python.org/3/library/secrets.html) module
+"provides access to the most secure source of randomness that your operating system provides".
+
+**USE PY-DICEWARE TO GENERATE PASSPHRASES AT YOUR OWN RISK**
+
+If you are concerned about maximum security, do not use py-diceware.
+Instead follow the [Diceware method](https://theworld.com/~reinhold/diceware.html)
+using real dice.
 
 ## Licence
 
