@@ -10,6 +10,7 @@ Diceware passphrase generator built with Python.
   - [Capitalisation](#capitalisation)
   - [Quiet Mode](#quiet-mode)
 - [Security](#security)
+  - [Randomness](#randomness)
 - [Licence](#licence)
 
 ## Usage
@@ -143,7 +144,8 @@ will use the default of 6 words which is recommended for most users
 
 ## Security
 
-**USE PY-DICEWARE TO GENERATE PASSPHRASES AT YOUR OWN RISK**
+> **Warning**
+> Use py-diceware to generate passphrases at your own risk.
 
 According to the [Diceware FAQ](https://theworld.com/%7Ereinhold/dicewarefaq.html#someoneknows),
 the Diceware method is secure even if an attacker knows:
@@ -172,10 +174,8 @@ The original Diceware method recommends:
 "Do not use a computer program or electronic dice generator.
 There is no easy way to be sure they are random enough."
 
-Python's [secrets](https://docs.python.org/3/library/secrets.html) module
+The [secrets](https://docs.python.org/3/library/secrets.html) module documentation advises that it
 "provides access to the most secure source of randomness that your operating system provides".
-
-**USE PY-DICEWARE TO GENERATE PASSPHRASES AT YOUR OWN RISK**
 
 If you are concerned about maximum security, do not use py-diceware.
 Instead follow the [Diceware method](https://theworld.com/~reinhold/diceware.html)
