@@ -9,6 +9,7 @@ Diceware passphrase generator built with Python.
   - [Delimiter](#delimiter)
   - [Capitalisation](#capitalisation)
   - [Quiet Mode](#quiet-mode)
+- [Licence](#licence)
 
 ## Usage
 
@@ -138,3 +139,7 @@ UsdaChiveAlaskaWareTwSethShuckDeform
 If the number of words is not provided from the command line in quiet mode, the generated passphrase
 will use the default of 6 words which is recommended for most users
 (see the above [Number of Words](#number-of-words) section for more info).
+
+## Licence
+
+Licensed under the [GNU General Public License v3.0](LICENSE).
