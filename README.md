@@ -75,12 +75,12 @@ Spasm_Windy_Teet_Straw_Punish_Dj
 
 The original Diceware method
 [recommends separating each word with a space](https://std.com/~reinhold/dicewarefaq.html#spaces),
-however this is not the default for `py-diceware` just based on the author's personal preference.
+however this is not the default for py-diceware just based on the author's personal preference.
 This also allows for quick copying of the passphrase with a double-click on Linux systems.
 
 It could be argued that without any delimiter, the passphrase entropy is slightly reduced due to redundancy;
 for example, the words "in put clammy" and "input clam my" would generate the same passphrase.
-However, `py-diceware` mitigates this problem by capitalising each word by default
+However, py-diceware mitigates this problem by capitalising each word by default
 (see the [Capitalisation](#capitalisation) section below).
 
 If you would prefer to generate a passphrase as recommended by the original Diceware method,
@@ -113,7 +113,11 @@ flick aura junky meter alien throb
 All words in the Diceware list are lower case, and the original method
 [does not recommend capitalising words](https://std.com/%7Ereinhold/dicewarefaq.html#capitalize)
 as arguably this does make the passphrase slightly more difficult to type
-(and harder to remember if characters are capitalised randomly, though this is not applicable for `py-diceware`).
+(and harder to remember if characters are capitalised randomly, though this is not applicable for py-diceware).
+
+However, the Diceware FAQ does note exceptions where some system password policies
+"insist that you use a mix of uppercase and lower case letters"
+or "where the length of the password is limited to 15 characters".
 
 If you would prefer to generate a passphrase as recommended by the original Diceware method,
 simply specify a space as the delimiter and no capitalisation of words like the example above.
