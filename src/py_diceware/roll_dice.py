@@ -1,6 +1,8 @@
 import secrets
 from typing import Optional
 
+from py_diceware.config import DiceDefaults
+
 """Python's random module generates only pseudo-random numbers
 and is designed for modelling and simulation, not security or cryptography.
 
@@ -12,7 +14,9 @@ See PEP 506 (https://peps.python.org/pep-0506/)
 
 
 class Die:
-    def __init__(self, face: Optional[int] = None, sides: int = 6) -> None:
+    def __init__(
+        self, face: Optional[int] = None, sides: int = DiceDefaults.sides
+    ) -> None:
         self.sides: int = sides
         if face is not None:
             self.face: int = face
@@ -28,7 +32,11 @@ class Die:
 
 
 class Dice:
-    def __init__(self, num_dice: int = 5, sides: int = 6) -> None:
+    def __init__(
+        self,
+        num_dice: int = DiceDefaults.num_dice,
+        sides: int = DiceDefaults.sides,
+    ) -> None:
         self.num_dice: int = num_dice
         self.faces: list[Die] = []
         for _ in range(num_dice):
@@ -38,7 +46,11 @@ class Dice:
         return "".join([str(face) for face in self.faces])
 
 
-def roll_dice(num_rolls: int, num_dice: int = 5, sides: int = 6) -> list[Dice]:
+def roll_dice(
+    num_rolls: int,
+    num_dice: int = DiceDefaults.num_dice,
+    sides: int = DiceDefaults.sides,
+) -> list[Dice]:
     dice_rolls: list[Dice] = []
     for _ in range(num_rolls):
         dice = Dice(num_dice, sides)

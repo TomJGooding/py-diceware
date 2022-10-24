@@ -5,17 +5,14 @@ from py_diceware.wordlist import WordList
 
 @dataclass
 class PassphraseDefaults:
-    number_of_words: int
-    min_words: int
-    delimiter: str
-    capitalisation: bool
-    wordlist: WordList
+    number_of_words: int = 6
+    min_words: int = 1
+    delimiter: str = ""
+    capitalisation: bool = True
+    wordlist: WordList = WordList("diceware.wordlist.asc")
 
 
-PASSPHRASE_DEFAULTS = PassphraseDefaults(
-    number_of_words=6,
-    min_words=1,
-    delimiter="",
-    capitalisation=True,
-    wordlist=WordList("diceware.wordlist.asc"),
-)
+@dataclass
+class DiceDefaults:
+    sides: int = 6
+    num_dice: int = 5

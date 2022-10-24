@@ -1,6 +1,6 @@
 import pytest
 
-from py_diceware.config import PASSPHRASE_DEFAULTS
+from py_diceware.config import PassphraseDefaults
 from py_diceware.passphrase import Passphrase
 from py_diceware.roll_dice import roll_dice
 
@@ -8,11 +8,11 @@ from py_diceware.roll_dice import roll_dice
 def test_passphrase_lookup_words():
     dice_rolls = roll_dice(num_rolls=6, num_dice=5, sides=1)
     passphrase = Passphrase(
-        PASSPHRASE_DEFAULTS.number_of_words,
-        PASSPHRASE_DEFAULTS.delimiter,
-        PASSPHRASE_DEFAULTS.capitalisation,
+        PassphraseDefaults.number_of_words,
+        PassphraseDefaults.delimiter,
+        PassphraseDefaults.capitalisation,
         dice_rolls,
-        PASSPHRASE_DEFAULTS.wordlist,
+        PassphraseDefaults.wordlist,
     )
     assert passphrase.words == ["a", "a", "a", "a", "a", "a"]
     assert len(passphrase.words) == 6
@@ -21,11 +21,11 @@ def test_passphrase_lookup_words():
 def test_passphrase_lookup_words_with_set_dice():
     dice_rolls = roll_dice(num_rolls=6)
     passphrase = Passphrase(
-        PASSPHRASE_DEFAULTS.number_of_words,
-        PASSPHRASE_DEFAULTS.delimiter,
-        PASSPHRASE_DEFAULTS.capitalisation,
+        PassphraseDefaults.number_of_words,
+        PassphraseDefaults.delimiter,
+        PassphraseDefaults.capitalisation,
         dice_rolls,
-        PASSPHRASE_DEFAULTS.wordlist,
+        PassphraseDefaults.wordlist,
     )
 
     passphrase.dice_rolls = [16665, 15653, 56322, 35616, 65224, 64326]
@@ -38,11 +38,11 @@ def test_passphrase_lookup_words_with_set_dice():
 def test_passphrase_lookup_words_lookup_error():
     dice_rolls = roll_dice(num_rolls=1)
     passphrase = Passphrase(
-        PASSPHRASE_DEFAULTS.number_of_words,
-        PASSPHRASE_DEFAULTS.delimiter,
-        PASSPHRASE_DEFAULTS.capitalisation,
+        PassphraseDefaults.number_of_words,
+        PassphraseDefaults.delimiter,
+        PassphraseDefaults.capitalisation,
         dice_rolls,
-        PASSPHRASE_DEFAULTS.wordlist,
+        PassphraseDefaults.wordlist,
     )
 
     passphrase.dice_rolls = ["This does not appear in the wordlist!"]
@@ -54,11 +54,11 @@ def test_passphrase_lookup_words_lookup_error():
 def test_passphrase_generate_passphrase_with_defaults():
     dice_rolls = roll_dice(num_rolls=6, num_dice=5, sides=1)
     passphrase = Passphrase(
-        PASSPHRASE_DEFAULTS.number_of_words,
-        PASSPHRASE_DEFAULTS.delimiter,
-        PASSPHRASE_DEFAULTS.capitalisation,
+        PassphraseDefaults.number_of_words,
+        PassphraseDefaults.delimiter,
+        PassphraseDefaults.capitalisation,
         dice_rolls,
-        PASSPHRASE_DEFAULTS.wordlist,
+        PassphraseDefaults.wordlist,
     )
     assert passphrase.generate_passphrase() == "AAAAAA"
 
@@ -67,11 +67,11 @@ def test_passphrase_generate_passphrase_with_delimiter():
     delimiter = "_"
     dice_rolls = roll_dice(num_rolls=6, num_dice=5, sides=1)
     passphrase = Passphrase(
-        PASSPHRASE_DEFAULTS.number_of_words,
+        PassphraseDefaults.number_of_words,
         delimiter,
-        PASSPHRASE_DEFAULTS.capitalisation,
+        PassphraseDefaults.capitalisation,
         dice_rolls,
-        PASSPHRASE_DEFAULTS.wordlist,
+        PassphraseDefaults.wordlist,
     )
     assert passphrase.generate_passphrase() == "A_A_A_A_A_A"
 
@@ -80,10 +80,10 @@ def test_passphrase_generate_passphrase_no_capitalisation():
     capitalisation = False
     dice_rolls = roll_dice(num_rolls=6, num_dice=5, sides=1)
     passphrase = Passphrase(
-        PASSPHRASE_DEFAULTS.number_of_words,
-        PASSPHRASE_DEFAULTS.delimiter,
+        PassphraseDefaults.number_of_words,
+        PassphraseDefaults.delimiter,
         capitalisation,
         dice_rolls,
-        PASSPHRASE_DEFAULTS.wordlist,
+        PassphraseDefaults.wordlist,
     )
     assert passphrase.generate_passphrase() == "aaaaaa"
