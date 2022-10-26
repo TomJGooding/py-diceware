@@ -10,6 +10,7 @@ Diceware passphrase generator built with Python.
   - [Capitalisation](#capitalisation)
   - [Quiet Mode](#quiet-mode)
 - [Security](#security)
+  - [Passphrase Length](#passphrase-length)
   - [Randomness](#randomness)
 - [Licence](#licence)
 
@@ -156,6 +157,19 @@ the Diceware method is secure even if an attacker knows:
 
 The security of the Diceware method is based on
 "the huge number of combinations that an attacker must search through, even with that knowledge".
+
+### Passphrase Length
+
+A six word passphrase is recommended for most users, which is the default for py-diceware
+if the number of words is not provided.
+
+For more information about recommended passphrase lengths, refer to the ['How long should my passphrase be?'
+section on the original Diceware FAQ](https://std.com/%7Ereinhold/dicewarefaq.html#howlong).
+
+The original Diceware method recommends starting over if the generated passphrase is shorter than 19 characters.
+Because some words on the diceware list are two characters or less, it is possible to generate a very short passphrase.
+
+Although extremely rare, you should also start over if your passphrase is a recognisable sentence or phrase.
 
 ### Randomness
 
