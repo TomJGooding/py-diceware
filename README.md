@@ -4,6 +4,7 @@ Diceware passphrase generator built with Python.
 
 ## Table of Contents
 
+- [About](#about)
 - [Usage](#usage)
   - [Number of Words](#number-of-words)
   - [Delimiter](#delimiter)
@@ -13,6 +14,19 @@ Diceware passphrase generator built with Python.
   - [Passphrase Length](#passphrase-length)
   - [Randomness](#randomness)
 - [Licence](#licence)
+
+## About
+
+Diceware is a method for generating random, strong and memorable passphrases
+[created by Arnold G. Reinhold](https://std.com/~reinhold/diceware.html).
+
+The original method uses ordinary physical dice to generate random five digit numbers.
+You look up each number in a special list called the
+[Diceware Word List](https://std.com/%7Ereinhold/diceware.wordlist.asc)
+to find the corresponding word. These random words are your new passphrase.
+
+py-diceware is a command line interface tool for generating passphrases
+based on the Diceware method.
 
 ## Usage
 
