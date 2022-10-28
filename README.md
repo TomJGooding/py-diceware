@@ -5,6 +5,7 @@ Diceware passphrase generator built with Python.
 ## Table of Contents
 
 - [About](#about)
+- [Installation](#installation)
 - [Usage](#usage)
   - [Number of Words](#number-of-words)
   - [Delimiter](#delimiter)
@@ -27,6 +28,18 @@ to find the corresponding word. These random words are your new passphrase.
 
 py-diceware is a command line interface tool for generating passphrases
 based on the Diceware method.
+
+## Installation
+
+Install py-diceware using pip:
+
+```
+pip install py-diceware
+```
+
+To learn more about installing Python packages, refer to the
+[Installation Tutorial](https://packaging.python.org/en/latest/tutorials/installing-packages/)
+from PyPI.
 
 ## Usage
 
